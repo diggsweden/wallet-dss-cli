@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2026 Digg - Agency for Digital Government
+#
+# SPDX-License-Identifier: CC0-1.0
+
+# Artifacts Configuration for wallet-dss-cli
+# Defines what to build and where to publish
+
+artifacts:
+  - name: wallet-dss-cli
+    project-type: maven
+    working-directory: .
+    build-type: application
+    config:
+      java-version: 25
+
+publishers:
+  - type: github-packages
+    artifacts: [wallet-dss-cli]

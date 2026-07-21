@@ -1,0 +1,11 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>diggsweden/.github//renovate-base.json"],
+  "packageRules": [
+    {
+      "description": "Wait 7 days before auto-merging to avoid newly published malicious packages",
+      "matchPackagePatterns": ["*"],
+      "minimumReleaseAge": "7 days"
+    }
+  ]
+}
