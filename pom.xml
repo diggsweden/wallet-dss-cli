@@ -77,10 +77,12 @@ SPDX-License-Identifier: CC0-1.0
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-jdk18on</artifactId>
+      <version>1.85</version>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk18on</artifactId>
+      <version>1.85</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
