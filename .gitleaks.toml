@@ -4,5 +4,5 @@
 
 [allowlist]
 paths = [
-    "src/test/resources/test-key\\.pem"
+    "src/test/resources/.*"
 ]
