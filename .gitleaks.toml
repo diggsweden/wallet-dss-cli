@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-gommitlint:
-  crypto_signature:
-    required: true
+[allowlist]
+paths = [
+    "src/test/resources/.*"
+]

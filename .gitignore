@@ -50,3 +50,4 @@ pnpm-debug.log*
 .npm
 node_modules
 **/megalinter-reports
+src/test/resources/test-signed.xml
