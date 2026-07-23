@@ -5,9 +5,26 @@
 package se.digg.wallet.dss.cli;
 
 import eu.europa.esig.dss.model.DSSDocument;
+import java.io.PrintStream;
 
 /** CLI Entry point for wallet-dss-cli. */
 public class WalletDssCli {
+
+  private final PrintStream out;
+
+  /** Default constructor, outputs to System.out. */
+  public WalletDssCli() {
+    this(System.out);
+  }
+
+  /**
+   * Constructor with explicit output stream.
+   *
+   * @param out the PrintStream to write the output to
+   */
+  public WalletDssCli(PrintStream out) {
+    this.out = out;
+  }
 
   /**
    * Main entry point.
@@ -16,7 +33,8 @@ public class WalletDssCli {
    */
   public static void main(String[] args) {
     try {
-      int exitCode = run(args);
+      WalletDssCli cli = new WalletDssCli();
+      int exitCode = cli.run(args);
       if (exitCode != 0) {
         System.exit(exitCode);
       }
@@ -33,7 +51,7 @@ public class WalletDssCli {
    * @return exit code
    * @throws Exception if an error occurs
    */
-  public static int run(String[] args) throws Exception {
+  public int run(String[] args) throws Exception {
     if (args.length < 4 || !args[0].equals("sign")) {
       System.err.println(
           "Usage: java -jar wallet-dss-cli.jar sign <path-to-file-to-be-signed> <path-to-signing-key> <path-to-certificate-chain>");
@@ -47,15 +65,8 @@ public class WalletDssCli {
     DssSigner signer = new DssSigner();
     DSSDocument signedDocument = signer.sign(fileToSign, signingKey, certificateChain);
 
-    String outFile = fileToSign;
-    if (outFile.endsWith(".xml")) {
-      outFile = outFile.substring(0, outFile.length() - 4) + "-signed.xml";
-    } else {
-      outFile += "-signed.xml";
-    }
-
-    signedDocument.save(outFile);
-    System.out.println("Successfully created signed document at: " + outFile);
+    signedDocument.writeTo(out);
+    out.flush();
     return 0;
   }
 }

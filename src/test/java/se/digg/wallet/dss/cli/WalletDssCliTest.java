@@ -7,10 +7,9 @@ package se.digg.wallet.dss.cli;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.junit.jupiter.api.BeforeEach;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
 class WalletDssCliTest {
@@ -18,32 +17,27 @@ class WalletDssCliTest {
   private static final String TEST_XML = "src/test/resources/test.xml";
   private static final String TEST_KEY = "src/test/resources/test-key.pem";
   private static final String TEST_CERT = "src/test/resources/test-cert.pem";
-  private static final String SIGNED_XML = "src/test/resources/test-signed.xml";
-
-  @BeforeEach
-  void setUp() throws Exception {
-    Files.deleteIfExists(Paths.get(SIGNED_XML));
-  }
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
   @Test
   void testSignSuccess() throws Exception {
     String[] args = {"sign", TEST_XML, TEST_KEY, TEST_CERT};
-    int exitCode = WalletDssCli.run(args);
+    WalletDssCli cli = new WalletDssCli(new PrintStream(outContent, true, StandardCharsets.UTF_8));
+    int exitCode = cli.run(args);
 
     assertEquals(0, exitCode, "Exit code should be 0 on success");
 
-    Path signedPath = Paths.get(SIGNED_XML);
-    assertTrue(Files.exists(signedPath), "Signed XML file should be created");
-
-    String signedContent = Files.readString(signedPath);
-    assertTrue(signedContent.contains("ds:Signature"),
+    String signedContent = outContent.toString(StandardCharsets.UTF_8);
+    assertTrue(
+        signedContent.contains("ds:Signature"),
         "Signed XML should contain a ds:Signature block");
   }
 
   @Test
   void testSignInvalidArguments() throws Exception {
     String[] args = {"sign", TEST_XML};
-    int exitCode = WalletDssCli.run(args);
+    WalletDssCli cli = new WalletDssCli(new PrintStream(outContent, true, StandardCharsets.UTF_8));
+    int exitCode = cli.run(args);
 
     assertEquals(1, exitCode, "Exit code should be 1 for invalid arguments");
   }
