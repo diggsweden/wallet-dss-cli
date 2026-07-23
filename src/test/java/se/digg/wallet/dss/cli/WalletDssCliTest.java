@@ -7,9 +7,9 @@ package se.digg.wallet.dss.cli;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,11 +18,17 @@ class WalletDssCliTest {
   private static final String TEST_XML = "src/test/resources/test.xml";
   private static final String TEST_KEY = "src/test/resources/test-key.pem";
   private static final String TEST_CERT = "src/test/resources/test-cert.pem";
-  private static final String SIGNED_XML = "src/test/resources/test-signed.xml";
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+  private final PrintStream originalOut = System.out;
 
   @BeforeEach
-  void setUp() throws Exception {
-    Files.deleteIfExists(Paths.get(SIGNED_XML));
+  void setUp() {
+    System.setOut(new PrintStream(outContent));
+  }
+
+  @AfterEach
+  void tearDown() {
+    System.setOut(originalOut);
   }
 
   @Test
@@ -32,11 +38,9 @@ class WalletDssCliTest {
 
     assertEquals(0, exitCode, "Exit code should be 0 on success");
 
-    Path signedPath = Paths.get(SIGNED_XML);
-    assertTrue(Files.exists(signedPath), "Signed XML file should be created");
-
-    String signedContent = Files.readString(signedPath);
-    assertTrue(signedContent.contains("ds:Signature"),
+    String signedContent = outContent.toString();
+    assertTrue(
+        signedContent.contains("ds:Signature"),
         "Signed XML should contain a ds:Signature block");
   }
 

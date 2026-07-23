@@ -47,15 +47,8 @@ public class WalletDssCli {
     DssSigner signer = new DssSigner();
     DSSDocument signedDocument = signer.sign(fileToSign, signingKey, certificateChain);
 
-    String outFile = fileToSign;
-    if (outFile.endsWith(".xml")) {
-      outFile = outFile.substring(0, outFile.length() - 4) + "-signed.xml";
-    } else {
-      outFile += "-signed.xml";
-    }
-
-    signedDocument.save(outFile);
-    System.out.println("Successfully created signed document at: " + outFile);
+    signedDocument.writeTo(System.out);
+    System.out.flush();
     return 0;
   }
 }
