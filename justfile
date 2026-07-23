@@ -173,7 +173,7 @@ lint-java-fmt:
 # Lint container files (Containerfile)
 [group('lint')]
 lint-container:
-
+    @{{lint}}/container.sh
 # Lint Node - prettier check only
 [group('lint')]
 lint-node-format:
