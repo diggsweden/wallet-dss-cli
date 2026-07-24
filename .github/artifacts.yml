@@ -13,6 +13,14 @@ artifacts:
     config:
       java-version: 25
 
+containers:
+  - name: wallet-dss-cli
+    from: [wallet-dss-cli]
+    container-file: Containerfile
+    context: .
+    platforms: linux/amd64,linux/arm64
+    registry: ghcr.io
+
 publishers:
   - type: github-packages
     artifacts: [wallet-dss-cli]
