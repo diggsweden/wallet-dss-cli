@@ -12,7 +12,7 @@ SPDX-License-Identifier: CC0-1.0
   <modelVersion>4.0.0</modelVersion>
   <groupId>se.digg</groupId>
   <artifactId>wallet-dss-cli</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <name>wallet-dss-cli</name>
   <description>
     A command line interface for the EU Digital Signature Service (DSS) project
