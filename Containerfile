@@ -6,8 +6,10 @@ FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /build
 
-# Copy the pom.xml and download dependencies
+# Copy the pom.xml, formatting and checkstyle configuration
 COPY pom.xml .
+COPY development ./development
+COPY checkstyle-suppressions.xml .
 RUN mvn dependency:go-offline -B
 
 # Copy the source code and build the fat jar
